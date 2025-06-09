@@ -1,2 +1,2 @@
 ! Load the custom dark mode enabler for GitHub
-github.com##+js(gdme.js)
+github.com##+js(github-force-dark.js)
