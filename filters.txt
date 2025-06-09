@@ -1,17 +1,2 @@
-! Load custom scriptlets from this repo
-userResourcesLocation https://dhyanaitsme.github.io/my-ublock-scriptlets/scriptlets.js
-
-! Force GitHub dark mode via custom alias
-github.com##+js(github-force-dark-mode)
-
-! Override GitHub theme preference via localStorage
-github.com##+js(set-localstorage, colorMode, dark)
-github.com##+js(set-localstorage, colorModeSync, true)
-
-! Apply fallback dark styles
-github.com##body:style(background-color: #0d1117 !important; color: #c9d1d9 !important)
-github.com##.application-main:style(background-color: #0d1117 !important)
-github.com##.Header:style(background-color: #161b22 !important)
-
-! Optional: hide theme toggle
-github.com##[data-view-component="true"][aria-label="Toggle color mode"]
+! Load the custom dark mode enabler for GitHub
+github.com##+js(gdme.js)
