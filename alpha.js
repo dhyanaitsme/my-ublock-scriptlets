@@ -1,11 +1,11 @@
-/// github-force-prefers-dark.js
-/// alias github-force-dark.js
+/// github-enforced-dark.js
+/// alias github-dark.js
 
 (function() {
-  // Override matchMedia before GitHub's scripts run
+  // Force GitHub to think user prefers dark mode
   const realMatchMedia = window.matchMedia;
   window.matchMedia = function(query) {
-    if (typeof query === "string" && query.includes("prefers-color-scheme")) {
+    if (query.includes("prefers-color-scheme")) {
       return {
         matches: query.includes("dark"),
         media: query,
@@ -20,11 +20,22 @@
     return realMatchMedia(query);
   };
 
-  // Pre-set localStorage just in case
+  // Fallback style for parts GitHub misses
+  const fallback = document.createElement("style");
+  fallback.textContent = `
+    html, body {
+      background-color: #0d1117 !important;
+      color: #c9d1d9 !important;
+    }
+    *, *::before, *::after {
+      border-color: #30363d !important;
+    }
+  `;
+  document.documentElement.appendChild(fallback);
+
+  // Pre-set dark mode in localStorage just in case
   try {
     localStorage.setItem("colorMode", "dark");
     localStorage.setItem("colorModeSync", "true");
-  } catch (e) {
-    console.warn("Could not set GitHub theme in localStorage:", e);
-  }
+  } catch {}
 })();
