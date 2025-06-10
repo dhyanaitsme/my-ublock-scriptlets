@@ -44,23 +44,26 @@
 /// alias: wpdme.js
 "use strict";
 (function() {
-    // 1. Set the dark mode preference cookie
+    // 1. Set the dark mode preference cookie for Wikipedia
     document.cookie = "enwikimwclientpreferences=night-mode; path=/; domain=.wikipedia.org; max-age=31536000";
     
-    // 2. Force the HTML class and attributes to dark mode
+    // 2. Update HTML classes to enforce dark mode
     const html = document.documentElement;
-    // Remove any explicit day/light classes
-    html.className = html.className.replace(/\bskin-theme-clientpref-day\b/g, "");
+    // Remove any explicit day/light mode classes
+    html.className = html.className
+        .replace(/\bskin-theme-clientpref-day\b/g, "")
+        .replace(/\bskin-theme-clientpref-light\b/g, "")
+        .replace(/\bskin-theme-clientpref-auto\b/g, "");
     // Add the dark mode class if not present
     if (!html.classList.contains("skin-theme-clientpref-night")) {
         html.classList.add("skin-theme-clientpref-night");
     }
-    // Remove any conflicting client preferences
-    html.className = html.className.replace(/\bvector-feature-night-mode-enabled\b/g, "");
-    html.classList.add("vector-feature-night-mode-enabled");
-    
+    // Ensure the night mode feature class is present
+    if (!html.classList.contains("vector-feature-night-mode-enabled")) {
+        html.classList.add("vector-feature-night-mode-enabled");
+    }
+
     // 3. If the appearance menu is open, select the "Dark" button
-    // (Wikipedia uses buttons with data-mw="interface-preferences-appearance" and aria-checked)
     const darkButton = Array.from(document.querySelectorAll('button, input[type="radio"]'))
         .find(el =>
             (el.textContent && el.textContent.trim().toLowerCase() === "dark") ||
