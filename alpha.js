@@ -136,24 +136,14 @@
     });
 })();
 
-// PopularToUSBest
-function redditPopularForceUS() {
-    try {
-        const url = new URL(window.location.href);
-        // Only redirect if on main Reddit homepage or /r/popular
-        if (
-            url.hostname.endsWith('reddit.com') &&
-            (
-                url.pathname === '/' ||
-                url.pathname === '/r/popular' ||
-                url.pathname === '/r/popular/'
-            )
-        ) {
-            url.pathname = '/r/popular/best';
-            url.searchParams.set('geo_filter', 'us');
-            window.location.replace(url.toString());
-        }
-    } catch (e) {}
-}
-
+/// reddit-popular-redirect.js
+/// alias rpr.js
+(function() {
+    // Check if we're on the Reddit homepage
+    if (window.location.hostname === 'www.reddit.com' && 
+        (window.location.pathname === '/' || window.location.pathname === '')) {
+        // Redirect to /r/popular/best with US geo filter
+        window.location.replace('https://www.reddit.com/r/popular/best/?geo_filter=us');
+    }
+})();
 
