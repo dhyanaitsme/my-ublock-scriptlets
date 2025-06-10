@@ -74,3 +74,66 @@
     }
 })();
 
+/// dark-mode-multi.js
+(function() {
+    const host = location.hostname;
+    window.addEventListener("DOMContentLoaded", function() {
+        // Google Search and Google News
+        if (
+            host === "www.google.com" ||
+            host === "news.google.com"
+        ) {
+            // Google uses a dark mode toggle in the menu (not always present when logged out)
+            const darkToggle = document.querySelector("a[aria-label*='Dark theme'], a[aria-label*='dark theme']");
+            if (darkToggle && !document.documentElement.classList.contains("dark")) {
+                darkToggle.click();
+            }
+            // Fallback: force dark background
+            document.documentElement.style.backgroundColor = "#202124";
+            document.body.style.backgroundColor = "#202124";
+        }
+
+        // YouTube
+        else if (host === "www.youtube.com") {
+            // Try to find and click the dark mode toggle in the menu
+            const menuButton = document.querySelector('button[aria-label="Settings"]');
+            if (menuButton) menuButton.click();
+            setTimeout(() => {
+                const darkMenuItem = Array.from(document.querySelectorAll("tp-yt-paper-item"))
+                    .find(el => el.textContent.toLowerCase().includes("appearance"));
+                if (darkMenuItem) {
+                    darkMenuItem.click();
+                    setTimeout(() => {
+                        const darkOption = Array.from(document.querySelectorAll("tp-yt-paper-item"))
+                            .find(el => el.textContent.toLowerCase().includes("dark theme"));
+                        if (darkOption) darkOption.click();
+                    }, 500);
+                }
+            }, 500);
+            // Fallback: force dark background
+            document.documentElement.style.backgroundColor = "#181818";
+            document.body.style.backgroundColor = "#181818";
+        }
+
+        // GitHub
+        else if (host === "github.com") {
+            // GitHub dark mode toggle (only available for logged-in users, fallback to CSS for logged-out)
+            document.documentElement.setAttribute("data-color-mode", "dark");
+            document.documentElement.setAttribute("data-dark-theme", "dark");
+            document.documentElement.style.backgroundColor = "#0d1117";
+            document.body.style.backgroundColor = "#0d1117";
+        }
+
+        // Reddit
+        else if (host === "www.reddit.com") {
+            // Reddit dark mode for not-logged-in users (sets theme cookie)
+            document.cookie = "theme=dark; domain=.reddit.com; path=/";
+            document.documentElement.classList.add("theme-dark");
+            document.body.classList.add("theme-dark");
+            document.documentElement.style.backgroundColor = "#1a1a1b";
+            document.body.style.backgroundColor = "#1a1a1b";
+        }
+    });
+})();
+
+
