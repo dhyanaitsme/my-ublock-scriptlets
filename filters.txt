@@ -1,2 +1,5 @@
 ! Load the custom dark mode enabler for GitHub
 github.com##+js(github-force-dark.js)
+
+wikipedia.org##+js(wpdme.js)
+wikipedia.org##+js(wikipedia-dark-mode-enforce.js)
